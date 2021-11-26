@@ -1,0 +1,102 @@
+<mat-sidenav-container class="example-container">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header (click)="onActualizarTareas()">
+
+      <mat-panel-title >
+        <div class="icon">
+          <mat-icon>inbox</mat-icon>
+        </div>
+        <div class="espacio"></div>
+        <div class="texto">
+           Inbox <span>{{totalTareas == 0 ? '(0) 😊' : '('+totalTareas+')'}}</span>
+        </div>
+      </mat-panel-title>
+
+    </mat-expansion-panel-header>
+    <div class="lista-expansion botones" *ngFor="let tarea of tareasSinFinalizar">
+      <button mat-flat-button class="botones" (click)="onEstadoSeleccionado(tarea)">
+        <span matBadge={{tarea.valor}} matBadgeSize="medium" matBadgeColor="accent" matBadgeOverlap="false">{{tarea.codigo}}</span>
+      </button>
+    </div>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel *ngIf="false">
+    <mat-expansion-panel-header>
+
+      <mat-panel-title>
+        <div class="icon">
+          <mat-icon>table_chart</mat-icon>
+        </div>
+        <div class="espacio"></div>
+        <div class="texto">
+          Reportes
+        </div>
+      </mat-panel-title>
+
+    </mat-expansion-panel-header>
+    <button mat-flat-button (click)="onClickReporteA()">
+      <span >Opcion A</span>
+    </button>
+
+  </mat-expansion-panel>
+
+  <mat-expansion-panel *ngIf="true">
+    <mat-expansion-panel-header>
+
+      <mat-panel-title>
+        <div class="icon">
+          <mat-icon>build</mat-icon>
+        </div>
+        <div class="espacio"></div>
+        <div class="texto">
+          Administrar
+        </div>
+      </mat-panel-title>
+
+    </mat-expansion-panel-header>
+    <div class="lista-expansion">
+      <button mat-flat-button class="botones" (click)="onListarProceso()">
+        <span >Anular proceso</span>
+      </button>
+      <button mat-flat-button class="botones" (click)="onReasignarProceso()">
+        <span >Reasignar proceso</span>
+      </button>
+      <button mat-flat-button [matMenuTriggerFor]="menu" class="botones">
+        <span>Histórico</span>
+      </button>
+      <mat-menu #menu="matMenu" >
+        <button mat-menu-item (click)="onListarHistorico(false)">
+          <mat-icon>add_circle</mat-icon>
+          <span >Procesos activos</span>
+        </button>
+
+        <button mat-menu-item (click)="onListarHistorico(true)" >
+          <mat-icon>remove_circle</mat-icon>
+          <span >Procesos finalizados</span>
+        </button>
+
+        <button mat-menu-item (click)="onListarProcesosPendientes()">
+          <mat-icon>av_timer</mat-icon>
+          <span >Procesos pendientes</span>
+        </button>
+
+        <button mat-menu-item (click)="onListarProcesosAnulados()">
+          <mat-icon>block</mat-icon>
+          <span>Procesos anulados</span>
+        </button>
+
+        <button mat-menu-item (click)="onListarProcesosSuspendidos()
+          "matTooltip="Procesos que requieren inspeccion para continuar su ejecución"
+          matTooltipPosition="right">
+          <mat-icon>find_in_page</mat-icon>
+          <span>Procesos suspendidos</span>
+
+        </button>
+      </mat-menu>
+
+    </div>
+
+  </mat-expansion-panel>
+
+
+</mat-sidenav-container>

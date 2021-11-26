@@ -1,0 +1,60 @@
+.container{
+  width: 80%;
+  margin: 10%;
+  margin-top: 2%;
+  margin-bottom: 5%;
+}
+
+.encabezado mat-card{
+  background-color: rgba(238, 150, 144, 0.534);
+}
+.encabezado{
+  width: 80%;
+  margin-left: 10%;
+  margin-top: 3%;
+}
+
+table {
+  width: 100%;
+}
+
+.mat-elevation-z8{
+  width: 100%;
+
+  margin-top: 2%;
+  margin-bottom: 5%;
+}
+
+.busqueda button{
+  margin: 10px;
+}
+
+.mat-header-cell {
+  text-justify:center;
+  font-weight: bold;
+ }
+
+ .mat-cell{
+  justify-content:flex-end;
+  text-justify:center;
+ }
+
+ .mat-cell button{
+  background-color: rgba(238, 150, 144, 0.534);
+ }
+
+ .activo{
+
+  background-color: rgba(128, 128, 128, 0.185);
+}
+
+.spinner {
+  color: rgb(78, 114, 6);
+  height: 50px;
+  width: 50px;
+}
+
+::ng-deep .mat-progress-spinner circle, .mat-spinner circle {
+  stroke: #38800f!important;
+}
+

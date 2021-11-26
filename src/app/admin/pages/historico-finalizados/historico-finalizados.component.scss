@@ -1,0 +1,55 @@
+.container{
+  width: 80%;
+  margin: 10%;
+  margin-top: 2%;
+  margin-bottom: 5%;
+}
+
+.encabezado{
+  width: 80%;
+  margin-left: 10%;
+  margin-top: 3%;
+}
+
+.encabezado mat-card{
+  background-color: rgba(238, 150, 144, 0.534);
+}
+
+.mat-elevation-z8{
+  width: 100%;
+  margin-top: 2%;
+  margin-bottom: 5%;
+}
+
+ table {
+  width: 100%;
+}
+
+.busqueda{
+  margin-bottom: 20px;
+}
+
+.busqueda button{
+  margin-left: 10px;
+}
+
+.busqueda mat-form-field{
+  font-size: 12px;
+}
+
+.cargandoDatos {
+  position: absolute;
+  width: 80%;
+  top: 25%;
+  bottom: 9%;
+  background: rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.formulario{
+
+  width: 100%;
+
+}

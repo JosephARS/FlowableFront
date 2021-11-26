@@ -1,0 +1,15 @@
+<div class="container">
+<p>configuracion works!</p>
+
+  <div class="botones">
+    <h2>Usuarios</h2>
+    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Usuarios">
+      <mat-icon>people_outline</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="onSuspenderUsuario()">
+        <span>Suspender usuario</span>
+      </button>
+    </mat-menu>
+  </div>
+</div>

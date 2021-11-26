@@ -1,0 +1,103 @@
+
+<div class="container">
+  <h1>Búsqueda de procesos</h1>
+  <hr>
+  <div class="busqueda">
+
+      <mat-form-field appearance="outline">
+        <mat-select [(ngModel)]="parametroSeleccionado" placeholder="Seleccione una opción">
+          <mat-option  value="consecutivo">Consecutivo</mat-option>
+          <mat-option  value="numeroSiniestro">Número de siniestro</mat-option>
+          <mat-option  value="numeroDocumento">Número de documento</mat-option>
+        </mat-select>
+        <mat-label>Seleccione un parámetro</mat-label>
+        <mat-icon matSuffix>ballot</mat-icon>
+        <mat-hint>Filtro de búsqueda</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Digite el dato</mat-label>
+        <input matInput placeholder="Digite un valor" [(ngModel)]="valorBusqueda" maxlength="20" [disabled]="parametroSeleccionado===''">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+      <button mat-raised-button (click)="onClickBuscar()">
+        <span>Consultar</span>
+      </button>
+  </div>
+  <mat-progress-bar mode="indeterminate" *ngIf="procesando"></mat-progress-bar>
+  <div class="mat-elevation-z8" *ngIf="dataSource">
+    <table mat-table [dataSource]="dataSource">
+
+      <!-- idConsecutivo -->
+      <ng-container matColumnDef="idConsecutivo">
+        <th mat-header-cell *matHeaderCellDef> Caso No. </th>
+        <td mat-cell *matCellDef="let element; let i = index">
+          <button mat-button (click)="onProcesoSeleccionado(element, i)">{{element.idConsecutivo}}</button> </td>
+      </ng-container>
+
+      <!-- nombreTarea -->
+      <ng-container matColumnDef="nombreTarea">
+        <th mat-header-cell *matHeaderCellDef> Actividad </th>
+        <td mat-cell *matCellDef="let element"> {{ element.nombreTarea }} </td>
+      </ng-container>
+
+      <!-- fechaCreacion -->
+      <ng-container matColumnDef="fechaCreacion">
+        <th mat-header-cell *matHeaderCellDef> Fecha creación </th>
+        <td mat-cell *matCellDef="let element"> {{ element.fechaCreacion |date:'medium' }} </td>
+      </ng-container>
+
+      <!-- fechaSolucion -->
+      <ng-container matColumnDef="fechaSolucion">
+        <th mat-header-cell *matHeaderCellDef> Fecha solución </th>
+        <td mat-cell *matCellDef="let element"> {{ element.fechaSolucion |date:'medium' }} </td>
+      </ng-container>
+
+      <!-- tiempoSolucion -->
+      <ng-container matColumnDef="tiempoSolucion">
+        <th mat-header-cell *matHeaderCellDef> Duración </th>
+        <td mat-cell *matCellDef="let element"> {{element.tiempoSolucion | calcularVencimientoPipe}} </td>
+      </ng-container>
+
+      <!-- tiempoSolucion -->
+      <ng-container matColumnDef="estado">
+        <th mat-header-cell *matHeaderCellDef> Estado </th>
+        <td mat-cell *matCellDef="let element"> {{element.fechaSolucion == null ? 'Abierto':'Cerrado'}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row let i = index; columns: displayedColumns;"
+      [ngClass]="{activo:(i == HighlightRow)}"></tr>
+    </table>
+
+    <mat-paginator
+    [length]="totalDatos"
+    [pageSize]="itemPorPagina"
+    [pageSizeOptions]="itemPorPaginaOpciones"
+    (page)="getPagina($event)">
+    </mat-paginator>
+
+  </div>
+
+</div>
+
+<div>
+  <mat-form-field  appearance="fill">
+    <mat-label>User</mat-label>
+  <mat-select [(ngModel)]="usuarioSeleccion">
+    <mat-option  value="Analista1">Analista1</mat-option>
+    <mat-option  value="Analista2">Analista2</mat-option>
+    <mat-option  value="Analista3">Analista3</mat-option>
+    <mat-option  value="Analista4">Analista4</mat-option>
+    <mat-option  value="Analista5">Analista5</mat-option>
+    <mat-option  value="Analista6">Analista6</mat-option>
+    </mat-select>
+  </mat-form-field> {{usuarioSeleccion}}
+    <button mat-flat-button color="accent" (click)='cambiarUsuario()'>Cambiar usuario</button>
+</div>
+
+<div class="formulario">
+  <app-formulario-gestion [procesoSeleccionado]="procesoSeleccionado" *ngIf="procesoSeleccionado!=''"></app-formulario-gestion>
+</div>
+
+<router-outlet></router-outlet>

@@ -1,0 +1,90 @@
+<div class="encabezado">
+  <mat-card><strong>Anulacion</strong></mat-card>
+</div>
+
+<div class="container">
+  <div class="busqueda">
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Ingresar búsqueda</mat-label>
+      <input matInput placeholder="Digite un valor" [formControl]="identificacionControl">
+      <mat-icon matSuffix>search</mat-icon>
+      <mat-error *ngIf="identificacionControl.invalid">
+        Ingrese al menos 3 caracteres.
+        </mat-error>
+    </mat-form-field>
+    <mat-error *ngIf="identificacionControl.hasError('required') && identificacionControl.hasError('minlength') ">
+      Ingrese al menos 3 caracteres.
+    </mat-error>
+      <button mat-flat-button
+                  (click)="onBuscarProcesos(identificacionControl.value)"
+                  [disabled]="identificacionControl.invalid">
+        <span>Buscar</span>
+      </button>
+  </div>
+
+  <mat-progress-bar mode="indeterminate" *ngIf="procesando"></mat-progress-bar>
+
+    <div class="mat-elevation-z8">
+      <table mat-table [dataSource]="dataSource">
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="idConsecutivo">
+          <th mat-header-cell *matHeaderCellDef> Caso No. </th>
+          <td mat-cell *matCellDef="let element"> {{element.idConsecutivo}}</td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="idProceso">
+          <th mat-header-cell *matHeaderCellDef> <strong>Id Proceso</strong>  </th>
+          <td mat-cell *matCellDef="let element"> {{element.idProceso}} </td>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="fechaInicio">
+          <th mat-header-cell *matHeaderCellDef> Fecha creación </th>
+          <td mat-cell *matCellDef="let element"> {{element.fechaInicio |date:'medium'}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="identificacionCliente">
+          <th mat-header-cell *matHeaderCellDef> Identificacion Asegurado</th>
+          <td mat-cell *matCellDef="let element"> {{element.identificacionCliente}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="numeroPoliza">
+          <th mat-header-cell *matHeaderCellDef> Numero Póliza </th>
+          <td mat-cell *matCellDef="let element"> {{element.numeroPoliza}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="UsuarioCreador">
+          <th mat-header-cell *matHeaderCellDef> Usuario Creador </th>
+          <td mat-cell *matCellDef="let element"> {{element.usuarioCreador}} </td>
+        </ng-container>
+
+        <!--Anular Column -->
+        <ng-container matColumnDef="anular">
+          <th mat-header-cell *matHeaderCellDef> </th>
+          <td mat-cell *matCellDef="let element; let i = index">
+            <mat-progress-bar mode="indeterminate" *ngIf="procesando && i == HighlightRow"></mat-progress-bar>
+            <button mat-flat-button (click)="abrirDialogo(element, i)" [disabled]="i == HighlightRow">Anular</button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row let i = index; columns: displayedColumns;"
+        [ngClass]="{activo:(i == HighlightRow)}"></tr>
+      </table>
+
+      <mat-paginator
+      [length]="totalDatos"
+      [pageSize]="itemPorPagina"
+      [pageSizeOptions]="itemPorPaginaOpciones"
+      (page)="getPagina($event)">
+      </mat-paginator>
+
+
+  </div>
+</div>
+

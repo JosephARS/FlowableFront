@@ -1,0 +1,435 @@
+<div class="spinner" *ngIf="procesando">
+  <mat-spinner></mat-spinner>
+</div>
+
+<div class="formulario mat-elevation-z8">
+
+  <div class="metadata mat-elevation-z8">
+    <p><strong>Caso No.</strong> {{oDetalleProceso.metadata?.idConsecutivo}}</p>
+    <p><strong>Fecha Creacion</strong> {{oDetalleProceso.metadata?.fechaInicio | date:'mediumDate'}} </p>
+    <p><strong>Estado Caso</strong> {{oDetalleProceso.metadata?.estadoCaso}} </p>
+    <p><strong>Canal de creación</strong> {{oDetalleProceso.metadata?.canalCreacion?.valor}} </p>
+    <p><strong>Estado solicitud</strong> {{oDetalleProceso.infoProceso?.estadoSolicitud}} {{oDetalleProceso.infoProceso?.estadoFinal}}</p>
+
+  </div>
+
+  <div class="detalleTarea">
+  <mat-tab-group animationDuration="500ms" style='min-height:80vh' dynamicHeight>
+    <mat-tab label="Información del siniestro">
+      <div class="infoSiniestro">
+        <!-- SECCIÓN INFORMACIÓN DEL ASEGURADO -->
+        <div>
+          <mat-card class="mat-elevation-z3" >
+            <mat-card-header>
+              <mat-card-title>Información del asegurado</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <p><span class="tituloCampo">Tipo de documento: </span> {{oDetalleProceso.asegurado?.tipoDocumento}}</p>
+              <p><span class="tituloCampo">Número de documento:</span> {{oDetalleProceso.asegurado?.numeroDocumento}}</p>
+              <p><span class="tituloCampo">Nombres del asegurado:</span> {{oDetalleProceso.asegurado?.nombres}}</p>
+              <p><span class="tituloCampo">Apellidos del asegurado:</span> {{oDetalleProceso.asegurado?.apellidos}}</p>
+              <p><span class="tituloCampo">Número de contacto:</span> {{oDetalleProceso.asegurado?.numeroContacto}}</p>
+              <p><span class="tituloCampo">Correo electrónico:</span> {{oDetalleProceso.asegurado?.email}}</p>
+              <p><span class="tituloCampo">CLV:</span> {{oDetalleProceso.asegurado?.clv?.codigo}} - {{oDetalleProceso.asegurado?.clv?.valor}} </p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <!-- SECCIÓN INFORMACIÓN DEL PRODUCTO -->
+        <div>
+          <mat-card class="mat-elevation-z3" >
+            <mat-card-header>
+              <mat-card-title>Información del producto</mat-card-title>
+            </mat-card-header>
+            <hr>
+            <mat-card-content>
+              <p><span class="tituloCampo">Ramo: </span> {{oDetalleProceso.infoProducto?.ramo?.codigo}} - {{oDetalleProceso.infoProducto?.ramo?.valor}}</p>
+              <p><span class="tituloCampo">Producto: </span> {{oDetalleProceso.infoProducto?.producto?.codigo}} - {{oDetalleProceso.infoProducto?.producto?.valor}} </p>
+              <p><span class="tituloCampo">Numero de póliza: </span>  {{oDetalleProceso.infoProducto?.numeroPoliza}}</p>
+              <p><span class="tituloCampo">Riesgo: </span> {{oDetalleProceso.infoProducto?.riesgo?.codigo}} - {{oDetalleProceso.infoProducto?.riesgo?.valor}}</p>
+              <p><span class="tituloCampo">Causa: </span> {{oDetalleProceso.infoProducto?.causa?.codigo}} - {{oDetalleProceso.infoProducto?.causa?.valor}}</p>
+              <p><span class="tituloCampo">Consecuencia: </span><li *ngFor="let consecuencia of arrConsecuencias"> {{consecuencia?.codigo}} - {{consecuencia?.valor}}</li></p>
+              <p><span class="tituloCampo">Cobertura: </span><li *ngFor="let cobertura of oDetalleProceso.infoProducto?.cobertura"> {{cobertura?.coberturaSini?.codigo}} - {{cobertura?.coberturaSini?.valor}}</li></p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <!-- SECCIÓN INFORMACIÓN DEL CASO -->
+        <div>
+          <mat-card class="mat-elevation-z3 seccion" [ngClass]="{'seccionNoEditable':!casoEditable}" *ngIf="casoVisible">
+            <mat-card-header>
+              <mat-card-title>Información del caso</mat-card-title>
+            </mat-card-header>
+            <div><mat-card-content>
+              <form (ngSubmit)="completaTareaCaso()" [formGroup]="casoForm">
+                  <p><span class="tituloCampo">Fecha del aviso: </span>{{oDetalleProceso.infoProceso?.fechaCreacion | date}} </p>
+                  <p><span class="tituloCampo">Resultado score de riesgo:</span> {{oDetalleProceso.infoProceso?.resultadoScoreRiesgo?.codigo}} - {{oDetalleProceso.infoProceso?.resultadoScoreRiesgo?.valor}} </p>
+                  <p><span class="tituloCampo">Resultado motor de clasificación: </span>{{oDetalleProceso.infoProceso?.clasificacionCaso?.codigo}} - {{oDetalleProceso.infoProceso?.clasificacionCaso?.valor}}</p>
+                  <p><span class="tituloCampo">Resultado motor de definición:</span> {{oDetalleProceso.infoProceso?.resultadoMotorDefi?.codigo}} - {{oDetalleProceso.infoProceso?.resultadoMotorDefi?.valor}}</p>
+                  <p><span class="tituloCampo">Cambio resultado motor de definición:</span> {{oDetalleProceso.infoProceso?.cambioMotorDef?.valor}}
+                      <span *ngIf="casoEditable">
+
+                        <mat-form-field *ngIf="casoEditable" appearance="outline" >
+                          <mat-icon matPrefix>edit</mat-icon>
+                          <mat-select formControlName="cambioMotorDef" placeholder="Seleccione una opción" (selectionChange)="onChangeCambioMotor($event)">
+                            <mat-option *ngFor="let opcion of opcionesMotorDefinicion" [value]="opcion">{{opcion | titlecase}}</mat-option>
+                          </mat-select>
+                          <mat-label>Seleccione una opción</mat-label>
+                          <mat-hint>Indique si desea cambiar el resultado del motor de Definición</mat-hint>
+                        </mat-form-field>
+                      </span>
+                      </p>
+                    <p><span class="tituloCampo">Motivo: </span> {{oDetalleProceso.infoProceso?.motivoCambioMotorDef}}
+                      <mat-form-field *ngIf="casoEditable" appearance="outline" >
+                        <textarea matInput cdkTextareaAutosize formControlName="motivo" placeholder="Escriba el motivo del cambio del resultado del motor de definición" required></textarea>
+                        <mat-icon matSuffix>edit</mat-icon>
+                      </mat-form-field>
+                      </p>
+                    <p><span class="tituloCampo">Resultado de la prueba de estrés de voz: </span> {{oDetalleProceso.infoProceso?.resultadoPruebaEstres}}
+                      <span class="casillaEdicion" *ngIf="casoEditable">
+                        <mat-form-field appearance="outline" >
+                          <mat-icon matPrefix>edit</mat-icon>
+                          <mat-select formControlName="pruebaDeVoz" placeholder="Seleccione una opción">
+                            <mat-option *ngFor="let opcion of pruebaDeVoz" [value]="opcion">{{opcion}}</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </span></p>
+                  <p><span class="tituloCampo">Variables producto: </span> {{oDetalleProceso.infoProceso?.varProducto}}</p>
+                  <p><span class="tituloCampo">Resultado evidencia: </span> {{oDetalleProceso.infoProceso?.resultadoEvidencia}}
+                    <mat-form-field *ngIf="casoEditable" appearance="outline">
+                      <mat-icon matPrefix>edit</mat-icon>
+                      <mat-select formControlName="evidencia" placeholder="Seleccione una opción">
+                      <mat-option  value="Correcta">Correcta</mat-option>
+                      <mat-option  value="Incorrecta">Incorrecta</mat-option>
+                      </mat-select>
+                    </mat-form-field> </p>
+                  <p><span class="tituloCampo">Fecha de desistimiento : </span> {{oDetalleProceso?.infoProceso?.fechaDesistimiento}}</p>
+                  <mat-card-actions class="botonCompletar" *ngIf="casoEditable">
+                    <button mat-flat-button color="accent" (click)='completaTareaCaso()'>Completar</button>
+                  </mat-card-actions>
+               </form>
+              </mat-card-content>
+            </div>
+            <mat-progress-bar mode="indeterminate" *ngIf="procesandoSeccion === 'casoEditable'"></mat-progress-bar>
+          </mat-card>
+        </div>
+        <!-- SECCION INFORMACIÓN DEL SINIESTRO -->
+        <div>
+          <mat-card class="mat-elevation-z3 seccion" [ngClass]="{'seccionNoEditable':!siniestroEditable}" *ngIf="siniestroVisible">
+            <mat-card-header>
+              <mat-card-title>Información del siniestro</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <form (ngSubmit)="completaTareaSiniestro()" [formGroup]="siniestroForm">
+                <p><span class="tituloCampo">Fecha del siniestro: </span> {{oDetalleProceso.siniestro?.fechaSiniestro | date}}</p>
+                <p><span class="tituloCampo">Número del siniestro: </span> {{oDetalleProceso.siniestro?.numeroSiniestro}}</p>
+                <p><span class="tituloCampo">Tipo de evento: </span> {{oDetalleProceso?.siniestro?.tipoEvento}}
+                  <span class="casillaEdicion" *ngIf="siniestroEditable">
+                  <mat-form-field *ngIf="!oDetalleProceso.siniestro.tipoEvento">
+                    <mat-select formControlName="tipoEvento" placeholder="Seleccione una opción" required>
+                      <mat-option *ngFor="let evento of tiposEvento" [value]="evento">{{evento}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="siniestroForm.invalid">Debe seleccionar una opción.</mat-error>
+                  </mat-form-field>
+                  </span></p>
+                <p><span class="tituloCampo">Valor de la reserva o apertura automática:</span> {{oDetalleProceso?.siniestro?.valorReserva | currency:'COP' }}</p>
+                <p><span class="tituloCampo">Fecha de formalización:</span> {{oDetalleProceso.siniestro?.fechaFormalizacion | date}}</p>
+                <mat-card-actions class="botonCompletar" *ngIf="siniestroEditable">
+                  <button type="submit" mat-flat-button color="accent" >Completar</button>
+                </mat-card-actions>
+              </form>
+            </mat-card-content>
+            <mat-progress-bar mode="indeterminate" *ngIf="procesandoSeccion === 'siniestroEditable'"></mat-progress-bar>
+          </mat-card>
+        </div>
+        <!-- SECCION LINEA DE ATENCION DEL CASO -->
+        <div>
+          <mat-card class="mat-elevation-z3 seccion" [ngClass]="{'seccionNoEditable':!canalAtencionEditable}" *ngIf="canalAtencionVisible">
+            <mat-card-header>
+              <mat-card-title>Linea de atención del caso</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <form (ngSubmit)="completaTareaCanalAtencion()" [formGroup]="canalAtencionForm">
+                <p><span class="tituloCampo">Linea de atención: </span> {{oDetalleProceso.canalAtencion?.lineaAtencion}}
+                  <span class="casillaEdicion" *ngIf="canalAtencionEditable">
+                    <mat-form-field *ngIf="canalAtencionEditable" appearance="outline" >
+                      <mat-label>Linea de atención </mat-label>
+                      <mat-select formControlName="lineaAtencion" placeholder="Seleccione una opción">
+                        <mat-option *ngFor="let linea of lineasAtencion" [value]="linea">{{linea}}</mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="canalAtencionForm.invalid">Debe seleccionar una opción.</mat-error>
+                    </mat-form-field>
+                  </span>
+                   </p>
+                <p><span class="tituloCampo">Responsable: </span> {{oDetalleProceso.canalAtencion?.responsable}} </p>
+                <p><span class="tituloCampo">Cambio de responsable: </span> {{oDetalleProceso.canalAtencion?.cambioResponsable}}
+                  <span class="casillaEdicion" *ngIf="canalAtencionEditable">
+                    <mat-form-field *ngIf="!oDetalleProceso.canalAtencion?.cambioResponsable" appearance="outline" >
+                      <input matInput cdkTextareaAutosize formControlName="cambioResponsable" placeholder="Digite aquí el responsable asignado">
+                    </mat-form-field>
+                  </span>
+                </p>
+                <p><span class="tituloCampo">Número de caso en Stellent: </span> {{oDetalleProceso.canalAtencion?.casoStellent}}
+                  <span class="casillaEdicion" *ngIf="canalAtencionEditable">
+                  <mat-form-field *ngIf="!oDetalleProceso.canalAtencion?.cambioResponsable" appearance="outline" >
+                    <input matInput cdkTextareaAutosize formControlName="numeroStellent" placeholder="Ingrese el número del caso creado en Stellent">
+                  </mat-form-field>
+                </span></p>
+                <mat-card-actions class="botonCompletar" *ngIf="canalAtencionEditable">
+                  <button type="submit" mat-flat-button color="accent" >Completar</button>
+                </mat-card-actions>
+              </form>
+              <button  mat-flat-button color="accent" (click)="corregirActividad()">Corregir</button>
+            </mat-card-content>
+            <mat-progress-bar mode="indeterminate" *ngIf="procesandoSeccion === 'canalAtencionEditable'"></mat-progress-bar>
+          </mat-card>
+        </div>
+        <!-- SECCIÓN SARLAFT -->
+        <div>
+          <mat-card class="mat-elevation-z3" *ngIf="siniestroVisible">
+            <mat-card-header>
+              <mat-card-title>Sarlaft</mat-card-title>
+            </mat-card-header>
+            <mat-card-content >
+              <p>¿Requiere actualizacion del Sarlaft?: {{oDetalleProceso.asegurado?.sarlaftActualizado ? "No":"Si"}}</p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <!-- SECCIÓN CAMPOS DE PAGO -->
+        <div>
+          <mat-card class="mat-elevation-z3 seccion" [ngClass]="{'seccionNoEditable':!pagoEditable}" *ngIf="pagoVisible">
+            <mat-card-header>
+              <mat-card-title>Campos de pago</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <form (ngSubmit)="completaTareaPago()" [formGroup]="pagoForm">
+                <p><span class="tituloCampo">Beneficiario: </span>{{oDetalleProceso.asegurado?.apellidos}} {{oDetalleProceso.asegurado?.nombres}}</p>
+                <p><span class="tituloCampo">Concepto:</span> {{oDetalleProceso.pago?.concepto}}
+                  <span class="casillaEdicion" *ngIf="pagoEditable">
+                    <mat-form-field *ngIf="!oDetalleProceso.pago?.concepto" appearance="outline" >
+                      <mat-label>Concepto</mat-label>
+                      <textarea matInput cdkTextareaAutosize formControlName="concepto" placeholder="Concepto del asignado"></textarea>
+                    </mat-form-field>
+                  </span>
+                  </p>
+                <p><span class="tituloCampo">Localidad de giro:</span> {{oDetalleProceso.pago?.localidadGiro}}</p>
+                <p><span class="tituloCampo">Número de factura:</span> {{oDetalleProceso.pago?.facturaNumero}}</p>
+                <p><span class="tituloCampo">Valor: </span> {{oDetalleProceso.pago?.valorPago | currency:'COP' }}</p>
+                <p><span class="tituloCampo">Número de liquidación:</span> {{oDetalleProceso.pago?.numeroLiquidacion}}</p>
+                <p><span class="tituloCampo">Resultado de la dispersión:</span> {{oDetalleProceso.pago?.resultadoDispersion}}</p>
+                <p><span class="tituloCampo">Fecha de pago:</span> {{oDetalleProceso.pago?.fechaPago | date}}</p>
+                <p><span class="tituloCampo">Fecha de actualización de estados financieros: </span> {{oDetalleProceso.pago?.fechaActualizaEstFinan | date}}
+                  <span class="casillaEdicion" *ngIf="pagoEditable">
+                    <mat-form-field *ngIf="!oDetalleProceso.pago?.fechaActualizaEstFinan" appearance="fill">
+                      <mat-label>Fecha Actualización  </mat-label>
+                      <input matInput  [matDatepicker]="dp3" formControlName="fechaActualizaEstFinan" [disabled]>
+                      <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+                      <mat-datepicker #dp3 disabled="false"></mat-datepicker>
+                    </mat-form-field>
+                  </span>
+                  </p>
+                <mat-card-actions class="botonCompletar" *ngIf="pagoEditable">
+                  <button type="submit" mat-flat-button color="accent">Completar</button>
+                </mat-card-actions>
+            </form>
+            </mat-card-content>
+            <mat-progress-bar mode="indeterminate" *ngIf="procesandoSeccion === 'pagoEditable'"></mat-progress-bar>
+          </mat-card>
+        </div>
+        <!-- SECCIÓN AUTORIZANTE -->
+        <div>
+          <mat-card class="mat-elevation-z3 seccion" [ngClass]="{'seccionNoEditable':!autorizanteEditable}" *ngIf="autorizanteVisible">
+            <mat-card-header>
+              <mat-card-title>Autorizante</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <form (ngSubmit)="completaTareaAutorizante()">
+                <p><span class="tituloCampo">Control técnico: </span> {{oDetalleProceso.pago?.controlTecnico}} </p>
+                <p><span class="tituloCampo">Autorizante:</span>
+                  <span *ngIf="!oDetalleProceso.pago?.autorizante && autorizanteEditable">{{idUsuarioLoggeado}}</span> {{oDetalleProceso.pago?.autorizante}}</p>
+                <mat-card-actions class="botonCompletar" *ngIf="autorizanteEditable">
+                  <button type="submit" mat-flat-button color="accent">Completar</button>
+                </mat-card-actions>
+              </form>
+
+            </mat-card-content>
+            <mat-progress-bar mode="indeterminate" *ngIf="procesandoSeccion === 'autorizanteEditable'"></mat-progress-bar>
+          </mat-card>
+        </div>
+        <!-- SECCIÓN CAMPOS DE OBJECIÓN -->
+        <div>
+          <mat-card class="mat-elevation-z3 seccion" [ngClass]="{'seccionNoEditable':!objecionEditable}" *ngIf="objecionVisible">
+            <mat-card-header>
+              <mat-card-title>Campos de objeción</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <form (ngSubmit)="completaTareaObjecion()" [formGroup]="objecionForm">
+                <p><span class="tituloCampo">Causa de objeción: </span> {{oDetalleProceso.objecion?.causa}}
+                  <span class="casillaEdicion" *ngIf="objecionEditable">
+                  <mat-form-field *ngIf="!oDetalleProceso.objecion?.causa">
+                    <mat-select formControlName="causa" placeholder="Seleccione una opción">
+                      <mat-option  value="Opcion1">Opcion1</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </span>
+                </p>
+                <p><span class="tituloCampo"><mat-icon>attach_file</mat-icon>Adjuntar carta de objeción </span> </p>
+                <mat-card-actions>
+                  <button mat-flat-button color="accent">Aceptar</button>
+                </mat-card-actions>
+                <p><span class="tituloCampo">Observaciones: </span> {{oDetalleProceso.objecion?.observacion}}
+                  <span class="casillaEdicion" *ngIf="objecionEditable">
+                    <mat-form-field *ngIf="!oDetalleProceso.objecion?.observacion" appearance="outline" >
+                      <textarea matInput cdkTextareaAutosize formControlName="observacion" placeholder="Observaciones causa objeción"></textarea>
+                    </mat-form-field>
+                  </span>
+                  </p>
+                <p><span class="tituloCampo">Fecha de objeción: </span> {{oDetalleProceso.objecion?.fechaObjecion | date}}
+                  <span class="casillaEdicion" *ngIf="objecionEditable">
+                  <mat-form-field *ngIf="!oDetalleProceso.objecion?.fechaObjecion" appearance="fill">
+                    <mat-label>Fecha objeción </mat-label>
+                    <input matInput  [matDatepicker]="dp3" formControlName="fechaObjecion" [disabled]>
+                    <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+                    <mat-datepicker #dp3 disabled="false"></mat-datepicker>
+                  </mat-form-field>
+                </span></p>
+                <p><span class="tituloCampo">Fecha de notiificación de la objeción: </span> {{oDetalleProceso.objecion?.fechaNotificacion | date}}</p>
+                <mat-card-actions class="botonCompletar" *ngIf="objecionEditable">
+                  <button type="submit" mat-flat-button color="accent">Completar</button>
+                </mat-card-actions>
+              </form>
+            </mat-card-content>
+            <mat-progress-bar mode="indeterminate" *ngIf="procesandoSeccion === 'objecionEditable'"></mat-progress-bar>
+          </mat-card>
+        </div>
+        <!-- SECCIÓN AJUSTADOR -->
+        <div>
+          <mat-card class="mat-elevation-z3 seccion" [ngClass]="{'seccionNoEditable':!ajustadorEditable}" *ngIf="ajustadorVisible">
+            <mat-card-header>
+              <mat-card-title>Ajustador</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <form (ngSubmit)="completaTareaAjustador()" [formGroup]="ajustadorForm">
+                <p><span class="tituloCampo">Ajustador o proveedor asignado:</span> {{oDetalleProceso.ajustador?.asignado}}
+                  <span class="casillaEdicion" *ngIf="ajustadorEditable">
+                    <mat-icon>edit</mat-icon>
+                    <mat-form-field *ngIf="!oDetalleProceso.ajustador?.asignado" appearance="outline" >
+                      <input matInput cdkTextareaAutosize formControlName="ajustadorAsignado" placeholder="Digite aquí el proveedor asignado">
+                    </mat-form-field>
+                  </span>
+                  </p>
+                <p><span class="tituloCampo">Fecha de asignación:</span> {{oDetalleProceso.ajustador?.fechaAsignacion | date}}
+                  <span class="casillaEdicion" *ngIf="ajustadorEditable">
+                    <mat-icon>edit</mat-icon>
+                  <mat-form-field *ngIf="!oDetalleProceso.ajustador?.fechaAsignacion" appearance="fill">
+                    <mat-label>Fecha asignacion </mat-label>
+                    <input matInput  [matDatepicker]="dp3" formControlName="fechaAsignacion" [disabled]>
+                    <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+                    <mat-datepicker #dp3 disabled="false"></mat-datepicker>
+                  </mat-form-field>
+                  </span>
+                  </p>
+                <p><span class="tituloCampo">Fecha de entrega:</span> {{oDetalleProceso.ajustador?.fechaEntrega | date}}
+                  <span class="casillaEdicion" *ngIf="ajustadorEditable">
+                    <mat-icon>edit</mat-icon>
+                    <mat-form-field *ngIf="!oDetalleProceso.ajustador?.fechaEntrega" appearance="fill">
+                      <mat-label>Fecha entrega </mat-label>
+                      <input matInput  [matDatepicker]="dp3" formControlName="fechaEntrega" [disabled]>
+                      <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+                      <mat-datepicker #dp3 disabled="false"></mat-datepicker>
+                    </mat-form-field>
+                  </span>
+                  </p>
+                <mat-card-actions class="botonCompletar" *ngIf="ajustadorEditable">
+                  <button mat-flat-button color="accent">Completar</button>
+                </mat-card-actions>
+              </form>
+            </mat-card-content>
+            <mat-progress-bar mode="indeterminate" *ngIf="procesandoSeccion === 'ajustadorEditable'"></mat-progress-bar>
+          </mat-card>
+        </div>
+      </div>
+    </mat-tab>
+    <!-- SECCIÓN DOCUMENTO SOPORTE -->
+    <mat-tab label="Documentos soporte">
+      <div class="infoDoc">
+        <div>
+          <mat-card class="mat-elevation-z3">
+            <mat-card-header>
+              <mat-card-title>Documentos soporte</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <p *ngIf="!oDetalleProceso?.infoProceso?.documentos"> No hay documentos para mostrar.</p>
+              <ul *ngFor="let documento of oDetalleProceso?.infoProceso?.documentos">
+                <a style="text-decoration: underline; cursor: pointer;" (click)="onConsultarDocumento(documento)"
+                  >{{documento?.route | nombreArchivo}}</a>
+              </ul>
+              <ul class="agregarDocContainer">
+                <span class="agregarDoc" (click)="inputDoc.click()">
+                  <button mat-mini-fab color="primary" class="upload-btn"><mat-icon>attach_file</mat-icon></button>Agregar soporte
+                </span>
+              </ul>
+
+              <input hidden="false" type="file" (change)="onAgregarDocumento($event)" accept=".pdf" #inputDoc/>
+              <span *ngIf="nombreArchivo !=''">
+                <mat-toolbar>
+
+                  <input matInput [(ngModel)]="nombreArchivo" name="name" />
+
+                </mat-toolbar>
+                <div class="botonCargar">
+                  <button mat-raised-button color="accent" (click)="onCargarDocumento()">Cargar</button>
+                  <button mat-raised-button color="warn" (click)="onCancelarCarga()">Cancelar</button>
+                </div>
+              </span>
+              <div class="spinner" *ngIf="cargandoDocumentos">
+                <mat-spinner></mat-spinner>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </mat-tab>
+    <!-- SECCIÓN HISTORIAL ANÁLISIS -->
+    <mat-tab label="Historial de análisis">
+      <div class="infoDoc">
+        <div>
+          <mat-card class="mat-elevation-z3">
+            <mat-card-header>
+              <mat-card-title>Historial análisis</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <app-historial-analisis [historial]="historialAnalisis" [idProceso]="procesoSeleccionado"></app-historial-analisis>
+
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </mat-tab>
+    <!-- SECCIÓN HISTORIAL DEL CASO -->
+    <mat-tab label="Historial del caso">
+      <div class="infoDoc">
+        <div>
+          <mat-card class="mat-elevation-z3">
+            <mat-card-header>
+              <mat-card-title>Historial del caso</mat-card-title>
+
+            </mat-card-header>
+            <mat-card-content>
+              <app-historial-caso [idProceso]="procesoSeleccionado"></app-historial-caso>
+
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="DiagramaPrueba">
+      <div class="infoDiagrama">
+
+          <div class="diagram-parent">
+            <app-diagrama-render [idProceso]="procesoSeleccionado" [diagramaXml]="xml"></app-diagrama-render>
+          </div>
+
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+  </div>
+</div>

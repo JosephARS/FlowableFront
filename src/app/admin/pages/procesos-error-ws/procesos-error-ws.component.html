@@ -1,0 +1,125 @@
+<div>
+<div class="encabezado">
+  <mat-card><strong>Historico > Procesos con Error</strong></mat-card>
+</div>
+
+<div class="container">
+
+  <!-- <div class="busqueda">
+
+    <mat-form-field appearance="outline">
+      <mat-label>Fecha de finalización</mat-label>
+      <mat-date-range-input [formGroup]="rangoFechas" [rangePicker]="picker" >
+        <input matStartDate formControlName="inicio" placeholder="Desde">
+        <input matEndDate formControlName="fin" placeholder="Hasta">
+      </mat-date-range-input>
+      <mat-hint>Ingrese un rango de fecha</mat-hint>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker color="accent"></mat-date-range-picker>
+
+    </mat-form-field>
+
+    <button mat-raised-button (click)="onClickFiltrar()">
+      <span>Filtrar</span>
+    </button>
+  </div> -->
+  <img src="assets/iconos/errorProc.png" class="img-modal" alt="errorProc" />
+  <h2>Procesos con error en respuesta de Servicios Web</h2>
+  <hr>
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSourceSuspendidos">
+
+      <ng-container matColumnDef="idConsecutivo">
+        <th mat-header-cell *matHeaderCellDef> Caso No. </th>
+        <td mat-cell *matCellDef="let element;">{{element.idConsecutivo}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actividadError">
+        <th mat-header-cell *matHeaderCellDef> Actividad error </th>
+        <td mat-cell *matCellDef="let element"> {{element.actividadError }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fechaError">
+        <th mat-header-cell *matHeaderCellDef> Fecha error </th>
+        <td mat-cell *matCellDef="let element"> {{element.fechaError |date:'medium'}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row (click)="abrirVentana(row, true)" *matRowDef="let row let i = index; columns: displayedColumns;"></tr>
+
+
+    </table>
+
+    <mat-paginator
+    [length]="totalDatosSuspendidos"
+    [pageSize]="itemPorPaginaSuspendidos"
+    [pageSizeOptions]="itemPorPaginaOpcionesSuspendidos"
+    (page)="getPaginaSuspendidos($event)">
+    </mat-paginator>
+
+  </div>
+
+  <div class="cargandoDatos" *ngIf="procesando">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <img src="assets/iconos/atrasentiempo.png" class="img-modal" alt="atrasentiempo" />
+  <h2>Procesos pausados por conexión o temporizador</h2>
+  <hr>
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSourceErrorWS" class="tabla2">
+
+      <ng-container matColumnDef="idConsecutivo">
+        <th mat-header-cell *matHeaderCellDef> Caso No. </th>
+        <td mat-cell *matCellDef="let element;">{{element.idConsecutivo}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actividadError">
+        <th mat-header-cell *matHeaderCellDef> Actividad error </th>
+        <td mat-cell *matCellDef="let element"> {{element.actividadError }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fechaError">
+        <th mat-header-cell *matHeaderCellDef> Fecha próximo reintento </th>
+        <td mat-cell *matCellDef="let element"> {{element.fechaError |date:'medium'}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row let i = index; columns: displayedColumns;"></tr>
+
+    </table>
+
+    <mat-paginator
+    [length]="totalDatosErrorWS"
+    [pageSize]="itemPorPaginaErrorWS"
+    [pageSizeOptions]="itemPorPaginaOpcionesErrorWS"
+    (page)="getPaginaErrorWS($event)">
+    </mat-paginator>
+
+  </div>
+</div>
+
+<!-- <div [ngClass]="{'ventanaLateralExpandida': (ventanaEmergente)}" > -->
+  <div class="ventanaLateralExpandida" [@ocultaVentana]="ventanaEmergente" >
+  <div class="areaVentana">
+
+    <button mat-mini-fab aria-label="Ocultar ventana" (click)="abrirVentana(null, false)">
+      <mat-icon>clear</mat-icon>
+    </button>
+
+    <h2> Información detalle de error </h2>
+
+    <p><strong>Caso No.:</strong> </p>
+    <ul>{{procesoError?.idConsecutivo}}</ul>
+    <p><strong>Id Flujo:</strong></p>
+    <ul>{{procesoError?.idProceso}}</ul>
+    <p><strong>Mensaje error:</strong></p>
+    <ul>{{procesoError?.mensajeError}}</ul>
+    <p><strong>Fecha error:</strong></p>
+    <ul>{{procesoError?.fechaError | date:'medium'}}</ul>
+    <button mat-raised-button (click)="onEjecutarReintento(procesoError.idJob)" color="primary">
+      <span> Ejecutar reintento </span>
+    </button>
+  </div>
+</div>
+</div>

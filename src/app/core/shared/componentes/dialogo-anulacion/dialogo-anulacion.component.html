@@ -1,0 +1,24 @@
+<div>
+  <h1 mat-dialog-title>Anulación de proceso</h1>
+  <div mat-dialog-content>
+      <div class="container">
+
+        <span>Motivo cancelación</span>
+        <mat-form-field>
+          <mat-label>Motivo</mat-label>
+          <mat-select [(ngModel)]="data.motivoAnulacion" appearance="fill" required>
+            <mat-option *ngFor="let opcion of opcionesAnulacion" [value]="opcion">{{opcion | titlecase}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <span>Comentarios</span>
+          <mat-form-field>
+              <textarea matInput [(ngModel)]="data.observacion" placeholder="Ingrese el motivo de la anulacion" appearance="outline"  required></textarea>
+          </mat-form-field>
+
+      </div>
+  </div>
+  <div mat-dialog-actions>
+      <button mat-raised-button (click)="cancelar()">Cancelar</button>
+      <button mat-stroked-button color="warn" [disabled]="data.motivoAnulacion==='' || data.observacion===''" [mat-dialog-close]="data"  cdkFocusInitial>Confirmar</button>
+  </div>

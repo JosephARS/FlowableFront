@@ -1,0 +1,25 @@
+<mat-toolbar class="container-header">
+  <button mat-icon-button aria-label="Boton Menú" (click)="onClick($event)">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <img src="/assets/imagenes/logo.png" alt="logo" height=80>
+  <div class="botones">
+    <button class="boton" mat-mini-fab aria-label="Home" (click)="onClickHome()">
+    <mat-icon>home</mat-icon>
+  </button>
+  </div>
+  <div class="botones">
+    <button class="boton" mat-mini-fab aria-label="Gestion" (click)="onClickConfig()">
+      <mat-icon>settings</mat-icon>
+      </button>
+  </div>
+
+  <span class="flex-spacer"></span>
+  <mat-icon>person</mat-icon>
+  <div class="usuario">{{usuarioLoggeado}}</div>
+  <button mat-stroked-button (click)="onClickLogout()">
+      <span> Cerrar sesión </span>
+      <mat-icon>exit_to_app</mat-icon>
+  </button>
+
+</mat-toolbar>

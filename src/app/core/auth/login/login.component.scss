@@ -1,0 +1,16 @@
+.container{
+  height: 50%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .busqueda{
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     align-items: center;
+    width: 20%;
+  }
+}

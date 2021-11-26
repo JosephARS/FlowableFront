@@ -1,0 +1,179 @@
+
+
+@use '~@angular/material' as mat;
+
+table {
+  width: 100%;
+}
+
+.seccion{
+  @include mat.elevation(10, #e9ba1e, 2);
+
+}
+
+.seccion:hover{
+  @include mat.elevation(2, #0e6e06, 1);
+
+  &:active {
+    @include mat.elevation(8);
+  }
+}
+
+.seccionNoEditable{
+  pointer-events:none;
+  background-color:rgb(245, 245, 245);
+  color:rgb(97, 97, 97);
+  cursor: not-allowed;
+  @include mat.elevation(3);
+}
+
+.formulario{
+  border-radius: 15px;
+  border: 1px solid grey;
+  margin-left: 5%;
+  margin-bottom: 100px;
+  width: 90%;
+  background-color: white;
+}
+
+.metadata{
+  display: flex;
+  background-color: rgba(211, 211, 211, 0.452);
+  border-radius: 15px;
+  border-bottom: solid 1px grey;
+  width: 80%;
+  margin: 10%;
+  margin-top: 2%;
+  margin-bottom: 5%;
+}
+.metadata p{
+  width: 25%;
+  display: flex;
+  flex-direction: column;
+  padding-left: 2%;
+  padding-top: 2%;
+  padding-bottom:2% ;
+  margin: 0;
+}
+
+.encabezado{
+  width: 80%;
+  margin-left: 10%;
+  margin-top: 3%;
+}
+
+.encabezado mat-card{
+  background-color: rgba(144, 238, 144, 0.534);
+}
+
+.infoSiniestro{
+  display: flex;
+  flex-direction: column;
+  width: 98%;
+  margin: 1%;
+  margin-left: 1%;
+}
+
+.infoSiniestro mat-card{
+
+  margin-bottom: 0.5%;
+}
+
+.infoDoc{
+  display: flex;
+  flex-direction: column;
+  width: 98%;
+  margin: 1%;
+  margin-left: 1%;
+}
+.infoDoc mat-card{
+
+  margin-bottom: 0.5%;
+}
+
+.activo{
+  background-color: rgba(160, 161, 156, 0.158);
+}
+
+
+.infoDiagrama{
+  width: 90%;
+  margin-left: 5%;
+}
+
+.tituloCampo{
+  font-weight: bolder;
+  font-size: small;
+  margin-right: 5px;
+  //text-transform:uppercase;
+}
+
+.botonCompletar {
+  text-align-last: center;
+  //margin-right: 20px;
+}
+
+.botonCompletar button {
+  width: 200px;
+}
+
+.spinner{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.casillaEdicion{
+  margin-left: 20px;
+}
+
+.agregarDocContainer{
+  margin-top: 30px;
+  padding-bottom: 10px;
+  width: fit-content;
+}
+
+.agregarDoc{
+  text-decoration: underline dotted;
+  cursor: pointer;
+  font-weight:bold;
+  transition: linear 0.2s;
+
+}
+
+.agregarDoc:hover{
+  font-size: 110%;
+  text-decoration: underline;
+}
+
+.agregarDoc button{
+margin-right: 3px;
+transition: 0.70s;
+}
+.agregarDoc button:hover{
+  opacity: .7;
+  transform: rotate(180deg);
+}
+
+.botonCargar{
+  margin-top: 2%;
+  margin-left: 1%;
+  display: flex;
+  flex-direction: row;
+}
+
+.botonCargar button{
+  margin-right: 25px;
+}
+
+.botonCargar button:last-child{
+  background-color: tomato;
+}
+
+.botonCargar button:hover{
+  background-color: rgba(255, 255, 255, 0);
+  color: black;
+  font-weight: bold;
+  transition: 0.2s linear;
+}
+

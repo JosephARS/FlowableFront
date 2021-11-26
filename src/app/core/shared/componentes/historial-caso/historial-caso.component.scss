@@ -1,0 +1,62 @@
+.container{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+ }
+
+.botonToggle{
+  margin-right: 10px;
+  align-self: flex-end;
+  padding-bottom: 10px;
+}
+
+table {
+  width: 100%;
+}
+
+.historialTabla{
+  max-height: 80vh;
+  overflow: auto;
+}
+
+// .mat-column {
+//   font-size: xx-large;
+// }
+
+.mat-column-comentario {
+  overflow: auto;
+  max-width: 210px;
+  text-overflow: clip;
+  white-space: normal;
+}
+
+.mat-column-nombreActividad {
+  overflow: auto;
+  max-width: 90px;
+  text-overflow: clip;
+  white-space: normal;
+}
+
+.mat-column-fechaInicio {
+  width: 5vw;
+
+}
+.mat-column-fechaFin{
+  width: 5vw;
+}
+
+
+td {
+
+  font-size: 90%;
+  text-align: center;
+}
+
+th{
+  text-align: center;
+}
+
+.pendiente{
+  font-weight: bold;
+
+}

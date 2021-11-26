@@ -1,0 +1,62 @@
+<div class="encabezado">
+  <mat-card><strong>{{tiluloSeccion}}</strong></mat-card>
+</div>
+
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource">
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="idConsecutivo">
+      <th mat-header-cell *matHeaderCellDef> Caso No. </th>
+      <td mat-cell *matCellDef="let element; let i = index">
+        <button mat-button (click)="onProcesoSeleccionado(element, i)">{{element.idConsecutivo}}</button> </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="nombreTarea">
+      <th mat-header-cell *matHeaderCellDef> Actividad </th>
+      <td mat-cell *matCellDef="let element"> {{element.nombreTarea}} </td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="fechaCreacion">
+      <th mat-header-cell *matHeaderCellDef> Fecha creación Actividad </th>
+      <td mat-cell *matCellDef="let element"> {{element.fechaCreacion |date:'medium'}} </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="fechaSolucion">
+      <th mat-header-cell *matHeaderCellDef> Fecha vencimiento </th>
+      <td mat-cell *matCellDef="let element">{{element.fechaSolucion |date:'medium'}} </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="tiempoSolucion">
+      <th mat-header-cell *matHeaderCellDef> Tiempo solución </th>
+      <td mat-cell *matCellDef="let element">
+        <div class="estado"
+        [ngClass]="{'vigente': (element.estadoSolucion?.estado=='Vigente'),
+                    'pronto': (element.estadoSolucion?.estado=='Pronto'),
+                    'vencido': (element.estadoSolucion?.estado=='Vencido')}" ></div>{{element.estadoSolucion?.tiempo }} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row let i = index; columns: displayedColumns;"
+    [ngClass]="{activo:(i == HighlightRow)}"></tr>
+
+    <div class="cargandoDatos" *ngIf="procesando">
+      <mat-spinner></mat-spinner>
+    </div>
+
+  </table>
+
+  <mat-paginator
+  [length]="totalDatos"
+  [pageSize]="itemPorPagina"
+  [pageSizeOptions]="itemPorPaginaOpciones"
+  (page)="getPagina($event)">
+  </mat-paginator>
+
+</div>
+
+<router-outlet></router-outlet>

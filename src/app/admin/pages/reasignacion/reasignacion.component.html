@@ -1,0 +1,103 @@
+<div class="encabezado">
+  <mat-card><strong>Reasignacion proceso</strong></mat-card>
+</div>
+
+
+<div class="container">
+  <div class="busqueda">
+
+      <mat-form-field appearance="outline">
+        <mat-select [(ngModel)]="parametroSeleccionado" placeholder="Seleccione una opción">
+          <!-- <mat-option  value="consecutivo">Consecutivo</mat-option> -->
+          <mat-option  value="responsable">Responsable</mat-option>
+        </mat-select>
+        <mat-label>Seleccione un parámetro</mat-label>
+        <mat-icon matSuffix>ballot</mat-icon>
+        <mat-hint>Filtro de búsqueda</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Digite el dato</mat-label>
+        <input matInput placeholder="Digite un valor" [(ngModel)]="valorBusqueda" maxlength="20" [disabled]="parametroSeleccionado===''">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+      <button mat-raised-button (click)="onClickBuscar()">
+        <span>Consultar</span>
+      </button>
+  </div>
+  <div class="mat-elevation-z8" *ngIf="dataSource">
+    <table mat-table [dataSource]="dataSource">
+
+      <!-- idConsecutivo -->
+      <ng-container matColumnDef="idConsecutivo">
+        <th mat-header-cell *matHeaderCellDef> Caso No. </th>
+        <td mat-cell *matCellDef="let element; let i = index"> {{element.idConsecutivo}}</td>
+      </ng-container>
+
+      <!-- nombreTarea -->
+      <ng-container matColumnDef="nombreTarea">
+        <th mat-header-cell *matHeaderCellDef> Actividad </th>
+        <td mat-cell *matCellDef="let element"> {{ element.nombreTarea }} </td>
+      </ng-container>
+
+      <!-- fechaCreacion -->
+      <ng-container matColumnDef="fechaCreacion">
+        <th mat-header-cell *matHeaderCellDef> Fecha creación </th>
+        <td mat-cell *matCellDef="let element"> {{ element.fechaCreacion |date:'medium' }} </td>
+      </ng-container>
+
+      <!-- fechaSolucion -->
+      <ng-container matColumnDef="fechaSolucion">
+        <th mat-header-cell *matHeaderCellDef> Fecha solución </th>
+        <td mat-cell *matCellDef="let element"> {{ element.fechaSolucion |date:'medium' }} </td>
+      </ng-container>
+
+      <!-- tiempoSolucion -->
+      <ng-container matColumnDef="tiempoSolucion">
+        <th mat-header-cell *matHeaderCellDef> Tiempo solución </th>
+        <td mat-cell *matCellDef="let element"> {{(element.fechaSolucion - element.fechaCreacion)/1000/60 }} </td>
+      </ng-container>
+
+      <!--Anular Column -->
+      <ng-container matColumnDef="reasignar">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let element; let i = index">
+          <mat-progress-bar mode="indeterminate" *ngIf="procesando && i == HighlightRow"></mat-progress-bar>
+          <button mat-flat-button (click)="onProcesoSeleccionado(element, i)" [disabled]="i == HighlightRow">Reasignar</button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row let i = index; columns: displayedColumns;"
+      [ngClass]="{activo:(i == HighlightRow)}"></tr>
+
+    </table>
+    <div class="spinner" *ngIf="procesando">
+      <mat-spinner></mat-spinner>
+    </div>
+    <mat-paginator
+    [length]="totalDatos"
+    [pageSize]="itemPorPagina"
+    [pageSizeOptions]="itemPorPaginaOpciones"
+    (page)="getPagina($event)">
+    </mat-paginator>
+
+  </div>
+
+  <div class="usuarios" *ngIf="usuariosAsignables">
+    <h2>Usuarios asignables ->   </h2>
+    <mat-form-field class="lista">
+      <mat-label>Usuarios disponibles</mat-label>
+      <mat-select [(ngModel)]="usuarioSeleccionado" placeholder="Seleccione un usuario" appearance="fill">
+        <mat-option *ngFor="let usuario of usuariosAsignables" [value]="usuario">{{usuario.loginUsuario + " -> Tareas: " + usuario.tareasActivas}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br>
+    <button mat-raised-button  (click)="onClickAceptar()">
+      <span>Continuar</span>
+    </button>
+  </div>
+
+
+
+</div>

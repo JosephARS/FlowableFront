@@ -1,0 +1,39 @@
+.container-header{
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.flex-spacer {
+  flex: 1 1 auto;
+  //position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.usuario{
+  margin-right: 2%;
+
+}
+
+.botones{
+  margin-left: 25px;
+  padding-top: 17px;
+  padding-bottom: 15px;
+  transition: .3s ease;
+}
+
+.botones:hover{
+  padding-top: 3px;
+}
+
+.boton{
+  transition: .5s ease;
+}
+
+.boton:hover{
+  background-color: rgba(255, 255, 255, 0);
+  //position: relative;
+}

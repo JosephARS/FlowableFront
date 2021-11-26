@@ -1,0 +1,97 @@
+.container{
+  width: 80%;
+  margin: 10%;
+  margin-top: 2%;
+  margin-bottom: 5%;
+  h1,h2{
+    display: inline;
+  }
+}
+
+.encabezado{
+  width: 80%;
+  margin-left: 10%;
+  margin-top: 3%;
+  mat-card{
+    background-color: rgba(255, 255, 255, 0.534);
+  }
+}
+
+.mat-elevation-z8{
+  width: 100%;
+  margin-top: 2%;
+  margin-bottom: 5%;
+}
+
+ table {
+  width: 100%;
+}
+
+.busqueda{
+  margin-bottom: 20px;
+  button{
+    margin-left: 10px;
+  }
+  mat-form-field{
+    font-size: 12px;
+  }
+}
+
+.cargandoDatos {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.ventanaLateralExpandida{
+  position: fixed;
+  width: 40%;
+  top: 60px;
+  bottom: 0;
+  right: 0;
+  left: 100%;
+  background: rgba(173, 173, 173, 0.623);
+  z-index: 1;
+//  transition: linear 5s;
+  overflow: hidden;
+
+}
+
+.areaVentana{
+  position: relative;
+  margin: 5%;
+  button{
+    margin-bottom: 5%;
+  }
+  button:last-child{
+    margin-top: 5%;
+  }
+}
+
+.mat-row .mat-cell {
+  border-bottom: 1px solid transparent;
+  border-top: 1px solid transparent;
+  cursor: pointer;
+}
+
+.mat-row:hover .mat-cell {
+  border-color: rgb(233, 229, 1);
+  background-color:  rgba(24, 23, 4, 0.089);
+}
+
+.img-modal{
+  display: inline-block;
+  width: 0.8cm;
+  margin-right: 5px;
+}
+
+.tabla2{
+  pointer-events:none;
+}

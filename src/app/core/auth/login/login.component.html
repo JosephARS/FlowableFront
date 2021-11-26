@@ -1,0 +1,24 @@
+<p>login works!</p>
+
+
+<div class="container">
+  <h1>Login Indeminzaciones Generales</h1>
+  <div class="busqueda">
+
+    <mat-form-field appearance="outline">
+      <mat-label>Usuario</mat-label>
+      <input matInput placeholder="Usuario" [(ngModel)]="usuario">
+      <mat-icon matSuffix>user</mat-icon>
+
+    </mat-form-field><div *ngIf="usuarioVacio">Ingrese un usuario</div>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Contraseña</mat-label>
+        <input matInput type="password" placeholder="Contraseña">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+      <button mat-raised-button (click)="onClickIngresar()">
+        <span>Ingresar</span>
+      </button>
+  </div>
+</div>

@@ -1,0 +1,81 @@
+.container{
+  width: 80%;
+  margin: 10%;
+  margin-top: 2%;
+  margin-bottom: 5%;
+}
+
+.encabezado mat-card{
+  background-color: rgba(238, 150, 144, 0.534);
+}
+.encabezado{
+  width: 80%;
+  margin-left: 10%;
+  margin-top: 3%;
+}
+
+.mat-elevation-z8{
+  width: 100%;
+
+  margin-top: 2%;
+  margin-bottom: 5%;
+}
+
+ table {
+  width: 100%;
+}
+
+
+tr.filaDetalle {
+  height: 0;
+}
+
+tr.filaElemento:not(.example-expanded-row):hover {
+  background: whitesmoke;
+}
+
+.filaElemento td {
+  border-bottom-width: 0;
+}
+
+.desplegable{
+  overflow: hidden;
+  display: flex;
+}
+
+.expandido {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.tituloCampo{
+  font-weight: bolder;
+  font-size: small;
+  margin-right: 5px;
+  //text-transform:uppercase;
+  text-decoration: brown;
+}
+
+.busqueda{
+  margin-bottom: 20px;
+}
+
+.busqueda button{
+  margin-left: 10px;
+}
+
+.busqueda mat-form-field{
+  font-size: 12px;
+}
+
+.cargandoDatos {
+  position: absolute;
+  width: 80%;
+  top: 25%;
+  bottom: 9%;
+  background: rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -1,0 +1,17 @@
+<div class="main-container">
+  <app-header (menuPulsado) = "sidenav.toggle()"></app-header>
+
+  <mat-sidenav-container class="sidenav-main-container">
+    <mat-sidenav #sidenav mode="side" closed class="sidenav-barra">
+      <h2></h2>
+      <app-sidenav></app-sidenav>
+
+    </mat-sidenav>
+
+
+    <mat-sidenav-content class="sidenav-contenido-derecha">
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+</div>

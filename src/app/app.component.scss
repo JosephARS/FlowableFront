@@ -1,0 +1,43 @@
+.main-container {
+  // display: flex;
+  // flex-direction: column;
+  // position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  min-width: 800px;
+  height: 100%;
+}
+
+.sidenav-main-container {
+  /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
+     causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
+  flex: 1;
+  position: absolute;
+  top: 60px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding-bottom: 2%;
+}
+
+.sidenav-barra {
+  width: 20%;
+  background: rgba(221, 240, 224, 0.486);
+  min-width: min-content;
+}
+
+.sidenav-contenido-derecha{
+padding-top: 1%;
+padding-bottom: 1%;
+min-width: 800px;
+}
+
+
+.diagram-parent {
+  height: 400px;
+  width: 80%;
+  border: solid 3px #EEE;
+  position: relative;
+}

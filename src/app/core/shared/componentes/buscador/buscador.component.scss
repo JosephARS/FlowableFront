@@ -1,0 +1,23 @@
+.container{
+  width: 80%;
+  margin: 10%;
+  margin-top: 2%;
+  margin-bottom: 5%;
+  //display: flex;
+}
+
+table {
+  width: 100%;
+}
+
+.busqueda{
+  margin-top: 1cm;
+  margin-bottom: 20px;
+  mat-form-field{
+    margin-right: auto;
+  }
+}
+
+.busqueda button{
+  margin-left: 10px;
+}

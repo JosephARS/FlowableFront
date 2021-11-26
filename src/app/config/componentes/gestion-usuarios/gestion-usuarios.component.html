@@ -1,0 +1,50 @@
+<div class="container">
+  <h1>Gestión de usuarios</h1>
+  <hr>
+
+  <div class="mat-elevation-z8" *ngIf="dataSource">
+    <table mat-table [dataSource]="dataSource">
+
+      <!-- identificacion -->
+      <ng-container matColumnDef="identificacion">
+        <th mat-header-cell *matHeaderCellDef> No. Identificacion </th>
+        <td mat-cell *matCellDef="let element; let i = index"> {{element.identificacion}}</td>
+      </ng-container>
+
+      <!-- loginUsuario -->
+      <ng-container matColumnDef="loginUsuario">
+        <th mat-header-cell *matHeaderCellDef> Login Usuario </th>
+        <td mat-cell *matCellDef="let element"> {{ element.loginUsuario }} </td>
+      </ng-container>
+
+      <!-- activo -->
+      <ng-container matColumnDef="activo">
+        <th mat-header-cell *matHeaderCellDef> Estado </th>
+        <td mat-cell *matCellDef="let element"> {{ element.activo === 0 ? "Inactivo":"Activo" }} </td>
+      </ng-container>
+
+      <!--cambiar Column -->
+      <ng-container matColumnDef="cambiar">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let element; let i = index">
+          <button mat-flat-button (click)="onUsuarioSeleccionado(element, i)"
+
+          [ngClass]="[element.activo === 0 ? 'botonActivar':'botonSuspender']">{{ element.activo === 0 ? "Habilitar":"Suspender" }}</button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row let i = index; columns: displayedColumns;"></tr>
+
+    </table>
+    <div class="spinner" *ngIf="procesando">
+      <mat-spinner></mat-spinner>
+    </div>
+    <mat-paginator
+    [pageSizeOptions]="[10, 25]">
+    </mat-paginator>
+
+  </div>
+
+</div>
+
